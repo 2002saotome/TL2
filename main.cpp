@@ -5,6 +5,6 @@ int main()
 {
 	printf("Hello,World!\n");
 
-	system("pause");
+	system("pause");;
 	return 0;
 }
