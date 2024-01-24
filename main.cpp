@@ -11,9 +11,16 @@ enum Argument {
 
 	NumArgument
 };
-
+//argv = 0x00000214f4f30780 {0x00000214f4f30798 "C:\\Users\\k021g1125\\Desktop\\ŠwZ\\LE3C\\ŒãŠú\\TL2\\TextureConverter\\x64\\Debug\\TextureConverter.exe"}
 int main(int argc, char* argv[])
 {
+	for (int i = 0; i < argc; i++)
+	{
+		printf(argv[i]);
+		printf("\n");
+
+	} 
+
 	assert(argc >= NumArgument);
 
 	//COMƒ‰ƒCƒuƒ‰ƒŠ‚Ì‰Šú‰»
