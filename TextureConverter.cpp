@@ -91,6 +91,29 @@ void TextureConverter::SeparateFilePath(const std::wstring& filePath)
 void TextureConverter::SaveDDSTextureToFile()
 {
 	HRESULT result;
+	ScratchImage mipChain;
+	size_t mipLevel = 0;
+
+	//ミップマップ生成
+	result = GenerateMipMaps(
+		_scratchImage.GetImages(), _scratchImage.GetImageCount(), _scratchImage.GetMetadata(),
+		TEX_FILTER_DEFAULT, mipLevel, mipChain);
+	if (SUCCEEDED(result))
+	{
+		_scratchImage = std::move(mipChain);
+		_metadata = _scratchImage.GetMetadata();
+	}
+
+	//圧縮形式に変換
+	ScratchImage converted;
+	result = Compress(_scratchImage.GetImages(), _scratchImage.GetImageCount(), _metadata,
+		DXGI_FORMAT_BC7_UNORM_SRGB, TEX_COMPRESS_BC7_QUICK | TEX_COMPRESS_SRGB_OUT |
+		TEX_COMPRESS_PARALLEL, 1.0f, converted);
+	if (SUCCEEDED(result))
+	{
+		_scratchImage = std::move(converted);
+		_metadata = _scratchImage.GetMetadata();
+	}
 
 	//出力ファイル名を設定する
 	std::wstring filePath = directoryPath_ + fileName_ + L".dds";
